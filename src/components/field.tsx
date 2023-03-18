@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 
 import params from "../params";
 import Flag from "./Flag";
@@ -11,10 +11,13 @@ type Props = {
     nearMines?: number
     exploded?: boolean
     flagged?: boolean
+    onOpen(): void
 }
 
 export default (props: Props): JSX.Element => {
     let { mined, opened, nearMines, exploded, flagged } = props
+
+
 
     let styleField: any[] = []
     styleField = [styles.field]
@@ -23,7 +26,9 @@ export default (props: Props): JSX.Element => {
     if (flagged) styleField.push(styles.flagged)
     if (!opened && !exploded) styleField.push(styles.regular)
 
-    let color: any = null
+    let color: any
+
+
     if (nearMines && nearMines > 0) {
         if (nearMines == 1) color = '#2A28D7'
         if (nearMines == 2) color = '#28520F'
@@ -35,15 +40,19 @@ export default (props: Props): JSX.Element => {
         nearMines = 0
     }
 
+
     return (
-        <View style={styleField}>
-            {!mined && opened && nearMines > 0 ?
-                <Text style={[styles.label, { color: color }]}>
-                    {nearMines}
-                </Text> : false}
-            {mined && opened ? <Mine /> : false}
-            {flagged && !opened ? <Flag /> : false}
-        </View>
+        <TouchableWithoutFeedback onPress={props.onOpen}>
+
+            <View style={styleField}>
+                {!mined && opened && nearMines > 0 ?
+                    <Text style={[styles.label, { color }]}>
+                        {nearMines}
+                    </Text> : false}
+                {mined && opened ? <Mine /> : false}
+                {flagged && !opened ? <Flag /> : false}
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 

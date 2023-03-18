@@ -5,12 +5,13 @@ import Field from './field'
 
 type Props = {
     board: Mine[][]
+    OnOpenField(r: number, c: number): void
 }
 
 const MineField = (props: Props) => {
     const rows = props.board.map((row: Mine[], r: number) => {
         const columns = row.map((field: Mine, c: number) => {
-            return <Field {...field} key={c} />
+            return <Field {...field} key={c} onOpen={() => props.OnOpenField(r, c)} />
         })
         return <View style={{ flexDirection: 'row' }} key={r}>
             {columns}
